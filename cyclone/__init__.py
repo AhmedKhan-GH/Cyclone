@@ -13,7 +13,7 @@ def get_api_key():
         return os.environ['OPENAI_API_KEY']
     except KeyError as e:
         logger.error(f"missing environment variable {e}")
-        raise
+        return None
 
 def get_api_info():
     return {"name": ai.__name__, "version": ai.__version__}
@@ -31,8 +31,6 @@ def get_image_info(filepath):
         logger.warning(f"operating system error: {e}")
         return None
 
-client = ai.OpenAI()
-
 from typing import Optional
 
 class ObjectClass(BaseModel):
@@ -46,21 +44,22 @@ def classify_image(
         model: str = "gpt-5-nano",
         schema: type[BaseModel] = ObjectClass
 ) -> dict | None:
-    api_key = get_api_key()
-    if not get_image_info(filepath):
+    if not get_api_key():
+        return None
+    client = ai.OpenAI()
+    info = get_image_info(filepath)
+    if info not in ("PNG", "WEBP", "JPEG", "GIF"):
+        logging.error(f"invalid image format: {info}")
         return None
     response = client.responses.parse(
         model="gpt-5-nano",
         input=[
-            {"role": "system", "content": "Extract the image information."},
+            {"role": "system", "content": "extract image information and output lowercase"},
             {
                 "role": "user",
                 "content": [
-                    {"type": "input_text", "text": "what's in this image?"},
-                    {
-                        "type": "input_image",
-                        "file_id": create_file(filepath)
-                    }
+                    {"type": "input_text", "text": "identify only the most prominent object"},
+                    {"type": "input_image", "file_id": create_file(filepath)}
                 ]
             }
         ],
@@ -78,11 +77,14 @@ def classify_image(
 )
 
 def create_file(file_path):
-  with open(file_path, "rb") as file_content:
-    result = client.files.create(
-        file=file_content,
-        purpose="vision",
-    )
+    if not get_api_key():
+        return None
+    client = ai.OpenAI()
+    with open(file_path, "rb") as file_content:
+        result = client.files.create(
+            file=file_content,
+            purpose="vision",
+        )
     return result.id
 
 def get_package_info():
