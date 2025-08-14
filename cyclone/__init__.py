@@ -5,10 +5,6 @@ import os
 from pydantic import BaseModel
 from typing import Optional
 
-# tasks, perhaps have pydantic schemas be passed in rather
-# than hard coded in the utility, this will enable back
-# end engineers determine what aspects they want to extract
-
 __version__ = "0.1.0"
 logger = logging.getLogger(__name__)
 
