@@ -8,7 +8,6 @@ def get_api_info():
     return {"name": ai.__name__, "version": ai.__version__}
 
 __version__ = "0.1.0"
-__name__ = "cyclone"
 
 def get_package_info():
     return {"name": __name__, "version": __version__}
