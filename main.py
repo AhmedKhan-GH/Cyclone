@@ -8,6 +8,9 @@ import cyclone as cy
 def main():
     print(cy.get_api_info())
     print(cy.get_package_info())
+    print(cy.get_image_info("test.txt"))
+    print(cy.get_image_info("BLANK.jpg"))
+    print(cy.get_image_info("Empty.png"))
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
