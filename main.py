@@ -1,16 +1,18 @@
-# This is a sample Python script.
+# main.py
+from fastapi import FastAPI, UploadFile, File
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+app = FastAPI()
 
-import cyclone as cy
+# Root endpoint to avoid 404 on "/"
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the FastAPI file upload server!"}
 
-def main():
-    print(cy.get_api_info())
-    print(cy.get_package_info())
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# File upload endpoint
+@app.post("/upload-test")
+async def upload_test(file: UploadFile = File(...)):
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "message": "File received!"
+    }
