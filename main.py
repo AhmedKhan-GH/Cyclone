@@ -7,6 +7,8 @@ import cyclone as cy
 
 def main():
     print(cy.classify_image("test_images/mixer_casual.jpeg"))
+    #print(cy.classify_image("test_images/purse_new.jpg"))
+    #print(cy.classify_image("test_images/vacuum_home.jpeg"))
     #print(cy.classify_image("test_images/blank.avif"))
 
 # Press the green button in the gutter to run the script.
