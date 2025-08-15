@@ -40,7 +40,6 @@ class ObjectClass(BaseModel):
     brand: Optional[str] = Field(description="the brand name if easily visible from labeling")  # Brand name if known
     style: Optional[str] = Field(description="characteristic of aesthetic or utility based on object")
 
-
 # have a way to reject images that are too large at this level
 # the front end team will also have restrictions on file upload
 # but this needs to be a last line of defense to not overuse tokens
